@@ -1,6 +1,7 @@
 
 import streamlit as st
 import pandas as pd
+from evaluator import evaluate_responses
 
 st.set_page_config(
     page_title="EvalLab AI",
@@ -9,20 +10,23 @@ st.set_page_config(
 )
 
 st.title("🧠 EvalLab AI")
-st.subheader("AI Response Evaluation & Quality Intelligence")
+st.caption("AI Response Evaluation & Quality Intelligence Platform")
 
-st.markdown(
-    "A platform for comparing, evaluating, "
-    "and analyzing AI-generated responses."
-)
+st.markdown("""
+Evaluate, compare and analyze AI-generated responses
+through structured quality assessment.
+""")
+
+if "history" not in st.session_state:
+    st.session_state.history = []
 
 st.divider()
 
-st.header("📊 Response Evaluation")
+st.header("Response Comparison")
 
 prompt = st.text_area(
-    "User prompt",
-    placeholder="Enter the original user question..."
+    "Original user prompt",
+    placeholder="Enter the user prompt..."
 )
 
 col1, col2 = st.columns(2)
@@ -30,55 +34,81 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("Response A")
     response_a = st.text_area(
-        "Model A response",
+        "Model A output",
         key="response_a"
     )
     score_a = st.slider(
-        "Response A quality score",
-        0, 10, 5,
-        key="score_a"
+        "Quality score — A",
+        0, 10, 5
     )
 
 with col2:
     st.subheader("Response B")
     response_b = st.text_area(
-        "Model B response",
+        "Model B output",
         key="response_b"
     )
     score_b = st.slider(
-        "Response B quality score",
-        0, 10, 5,
-        key="score_b"
+        "Quality score — B",
+        0, 10, 5
     )
 
-if st.button("Compare responses"):
+if st.button("Evaluate responses", type="primary"):
     if not prompt.strip():
-        st.warning("Please enter the original user prompt.")
-    elif not response_a.strip() or not response_b.strip():
-        st.warning("Please provide both responses.")
+        st.warning("Please enter the original prompt.")
     else:
-        st.success("Comparison completed!")
+        try:
+            result = evaluate_responses(
+                response_a,
+                response_b,
+                score_a,
+                score_b
+            )
 
-        winner = (
-            "Response A" if score_a > score_b
-            else "Response B" if score_b > score_a
-            else "Tie"
-        )
+            result["prompt"] = prompt
+            st.session_state.history.append(result)
 
-        st.metric("Preferred response", winner)
+            st.success("Evaluation completed!")
 
-        results = pd.DataFrame({
-            "Response": ["A", "B"],
-            "Quality score": [score_a, score_b]
-        })
+            col_a, col_b, col_c = st.columns(3)
 
-        st.bar_chart(
-            results.set_index("Response")
-        )
+            col_a.metric("Preferred response", result["winner"])
+            col_b.metric("Score A", result["score_a"])
+            col_c.metric("Score B", result["score_b"])
+
+            st.metric(
+                "Score difference",
+                result["score_difference"]
+            )
+
+        except ValueError as error:
+            st.error(str(error))
+
+st.divider()
+
+st.header("Evaluation History")
+
+if st.session_state.history:
+    history_df = pd.DataFrame(
+        st.session_state.history
+    )
+
+    st.dataframe(
+        history_df,
+        use_container_width=True
+    )
+
+    st.download_button(
+        "Download evaluation report",
+        history_df.to_csv(index=False),
+        file_name="evallab_report.csv",
+        mime="text/csv"
+    )
+else:
+    st.info("No evaluations recorded yet.")
 
 st.divider()
 
 st.caption(
-    "EvalLab AI | Independent software project "
-    "| Built for AI quality evaluation"
+    "EvalLab AI | Independent software project"
 )
