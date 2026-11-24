@@ -1,67 +1,76 @@
-# AI Response Evaluation – Brazilian Portuguese 🇧🇷
 
-## Project Overview
+# 🧠 EvalLab AI
+### AI Response Evaluation & Quality Intelligence Platform
 
-This project demonstrates practical methods for evaluating AI-generated responses in Brazilian Portuguese (PT-BR).
+EvalLab AI is an independent software project designed to compare, evaluate, and analyze AI-generated responses through structured quality assessment.
 
-The goal is to assess response quality, accuracy, relevance, clarity, and instruction following.
+## 🎯 Project Goal
 
-**Project Type:** Demonstration Portfolio  
-**Language:** Brazilian Portuguese (PT-BR)  
-**Domain:** Artificial Intelligence / LLM Evaluation
+The goal is to provide a simple and organized environment for evaluating two AI-generated responses to the same user prompt.
 
-## Evaluation Criteria
+## ✨ Features
 
-| Criterion | Description |
-|---|---|
-| Accuracy | Checks whether the information is correct. |
-| Relevance | Evaluates how well the response addresses the request. |
-| Clarity | Assesses readability and natural language. |
-| Instruction Following | Checks compliance with user instructions. |
-| Language Quality | Evaluates grammar and Brazilian Portuguese usage. |
+- Compare two AI-generated responses.
+- Assign quality scores from 0 to 10.
+- Identify the preferred response based on scores.
+- Calculate score differences.
+- Maintain an evaluation history during the session.
+- Export evaluation reports as CSV files.
+- Validate empty responses and invalid scores.
 
-## Practical Evaluation Example
+## 🛠️ Technologies
 
-**User Prompt:**
+- Python
+- Streamlit
+- Pandas
+- Pytest
 
-"Explique por que é importante beber água regularmente."
+## 📁 Project Structure
 
-**Response A:**
+```text
+ai-response-evaluation-pt-br/
+├── app.py
+├── evaluator.py
+├── requirements.txt
+├── README.md
+└── tests/
+    └── test_evaluator.py
+```
 
-"Beber água regularmente ajuda a manter o equilíbrio dos fluidos corporais, contribui para a regulação da temperatura e auxilia no funcionamento adequado do organismo."
+## 🚀 Installation
 
-**Response B:**
+Clone the repository:
 
-"Água não é importante para o corpo. Você só precisa beber quando sentir muita sede."
+```bash
+git clone https://github.com/camilasantosf90-cmd/ai-response-evaluation-pt-br.git
+cd ai-response-evaluation-pt-br
+```
 
-### Evaluation
+Install dependencies:
 
-**Response A – Higher Quality**
+```bash
+pip install -r requirements.txt
+```
 
-- Accurate general information.
-- Directly addresses the question.
-- Clear and natural Brazilian Portuguese.
-- Follows the user's instruction.
+Run the application:
 
-**Response B – Lower Quality**
+```bash
+streamlit run app.py
+```
 
-- Contains misleading health information.
-- Oversimplifies hydration needs.
-- Does not provide a reliable explanation.
+## 🧪 Tests
 
-## Final Assessment
+Run the automated tests with:
 
-Response A is the preferred answer because it provides more accurate, relevant, and reliable information.
+```bash
+pytest
+```
 
-## Skills Demonstrated
+## 📌 Current Scope
 
-- AI Response Evaluation
-- Comparative Analysis
-- Brazilian Portuguese Linguistic Quality
-- Instruction Following Assessment
-- Critical Thinking
-- Quality Assurance
+EvalLab AI currently uses manually supplied responses and quality scores. It does not connect directly to AI model APIs or automatically determine factual accuracy.
 
----
+## 👩‍💻 Project Status
 
-*This is an independently created demonstration project for portfolio purposes. It does not represent confidential client work or an official evaluation dataset.*
+This is an independent project under active development, created to explore software engineering, AI response evaluation, and quality assessment workflows.
+
